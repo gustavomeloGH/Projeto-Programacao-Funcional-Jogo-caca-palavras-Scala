@@ -28,7 +28,7 @@ class GameGUI {
 
   def loadGameRunning(): Unit = {
      jLine(10)
-    showGame(wordHunt.getMatrixGame)//mudar aqui
+    showGame(wordHunt.getMatrixGame)//TESTE -> mudar para getMatrix
     while (win > 0) {
       inputMainGame
     }
@@ -104,7 +104,7 @@ class GameGUI {
                         jLine(10)
                         if (checkAswer(t, line, initC, fromC - 1)) win -= 1
                         println(s"\nFaltando $win palavras\n")
-                        showGame(wordHunt.getMatrixGame)//mudarAqui
+                        showGame(wordHunt.getMatrixGame) //TESTE -> mudar para getMatrix
                       }
           }
   }
@@ -172,7 +172,7 @@ class GameGUI {
   def setMatrixWordFound(px: Int, py: Int, size: Int, x: Int, y: Int): Unit = {
     var newMatrix = wordHunt.getMatrixGame
     for (i <- 0 until size) {
-      newMatrix(x + px * i)(y + py * i) = (newMatrix(x + px * i)(y + py * i)).toUpper //mudar aqui
+      newMatrix(x + px * i)(y + py * i) = (newMatrix(x + px * i)(y + py * i)).toUpper
     }
     wordHunt.setMatrixGame(newMatrix)
   }
