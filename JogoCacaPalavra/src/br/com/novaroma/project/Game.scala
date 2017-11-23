@@ -107,11 +107,12 @@ class Game {
     matrix = matrix.map(_.reverse)
   }
 
-  //----------- SET METHODS GAME ---------------
+  //----------- GET/SET METHODS GAME ---------------
 
   def getMatrix = matrix
   def getMatrixGame = matrixGame
   def getWordsAswers = wordsAswers
+  def setMatrixGame(newMatrix: Array[Array[Char]]) = { matrixGame = newMatrix }
 
   //ALTERNATIVE WAY
   //by: Leonardo Lucena -> git.io/vF9FY

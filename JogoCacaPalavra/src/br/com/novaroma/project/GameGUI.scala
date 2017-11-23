@@ -28,7 +28,7 @@ class GameGUI {
 
   def loadGameRunning(): Unit = {
      jLine(10)
-    showGame(wordHunt.getMatrix)//mudar aqui
+    showGame(wordHunt.getMatrixGame)//mudar aqui
     while (win > 0) {
       inputMainGame
     }
@@ -104,7 +104,7 @@ class GameGUI {
                         jLine(10)
                         if (checkAswer(t, line, initC, fromC - 1)) win -= 1
                         println(s"\nFaltando $win palavras\n")
-                        showGame(wordHunt.getMatrix)//mudarAqui
+                        showGame(wordHunt.getMatrixGame)//mudarAqui
                       }
           }
   }
@@ -137,11 +137,11 @@ class GameGUI {
   //----- GAME CHECK ASWERS
 
   def checkAswer(t: String, line: Int, initC: Int, fromC: Int): Boolean = {
-    var foundWord = t match {
-      case "vert"  => getString(1, 0, line, initC, (initC + fromC))
-      case "horiz" => getString(0, 1, line, initC, (initC + fromC))
-      case "diag"  => getString(1, 1, line, initC, (initC + fromC))
-      case "trans" => getString(1, -1, line, initC, (initC + fromC))
+    var (foundWord, px, py) = t match {
+      case "vert"  => (getString(1, 0, line, initC, (initC + fromC)), 1, 0)
+      case "horiz" => (getString(0, 1, line, initC, (initC + fromC)), 0, 1)
+      case "diag"  => (getString(1, 1, line, initC, (initC + fromC)), 1, 1)
+      case "trans" => (getString(1, -1, line, initC, (initC + fromC)), 1, -1)
     }
     var exist = wordHunt.getWordsAswers.contains(foundWord)
     var alreadyFound = rightWords.contains(foundWord)
@@ -152,6 +152,7 @@ class GameGUI {
         print(" esta palavra já foi encontrada!")
       } else {
         rightWords = foundWord :: rightWords
+        setMatrixWordFound(px, py, foundWord.size, line, initC)
         print(" você acertou! ")
       }
     } else {
@@ -166,9 +167,14 @@ class GameGUI {
     var seq = List.range(y, endY + 1)
     seq.zipWithIndex.map(i => wordHunt.getMatrixGame(x + px * i._2)(y + py * i._2)).mkString
   }
+ 
   
-  def setMatrixWordFound(): Unit = {
-    
+  def setMatrixWordFound(px: Int, py: Int, size: Int, x: Int, y: Int): Unit = {
+    var newMatrix = wordHunt.getMatrixGame
+    for (i <- 0 until size) {
+      newMatrix(x + px * i)(y + py * i) = (newMatrix(x + px * i)(y + py * i)).toUpper //mudar aqui
+    }
+    wordHunt.setMatrixGame(newMatrix)
   }
 
   //-------SET ENUMERATION ON MATRIX
