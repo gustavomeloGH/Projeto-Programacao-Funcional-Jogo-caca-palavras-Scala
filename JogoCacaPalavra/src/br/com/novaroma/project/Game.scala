@@ -22,7 +22,8 @@ class Game {
   private var alphabet = "abcdefghijklmnopqrstuwvxz"
 
   //First-order function
-  private var randomN = (start: Int, end: Int) => start + Random.nextInt((end - start) + 1)
+  private val randomN = (start: Int, end: Int) => start + Random.nextInt((end - start) + 1)
+  private val wordMatrixSize = (word: String) =>  Math.abs(word.size - matrix.size)
   private val lineGame = (word: String, n: Int) => n match {
     case 1 => fillHoriz(word)
     case 2 => fillVert(word)
@@ -30,6 +31,13 @@ class Game {
     case 4 => fillTrans(word)
   }
   
+  private val parametersGame = (startLevel: Int) => {
+     startLevel match {
+        case 1 => (EnumLevel.Easy.id, wordsLevelEasy, EnumLineType.vertHorizon.id)
+        case 2 => (EnumLevel.Medium.id, wordsLevelMedium, EnumLineType.vertHorizonDiag.id)
+        case 3 => (EnumLevel.Hard.id, wordsLevelHard, EnumLineType.vertHorizonDiagTrans.id)
+      }
+  }
 
   //DEFINITION OF CLASS METHODS
 
@@ -37,11 +45,7 @@ class Game {
     var boo = false
     do {
       boo = false
-      val (size, wordsList, lineType) = startLevel match {
-        case 1 => (EnumLevel.Easy.id, wordsLevelEasy, EnumLineType.vertHorizon.id)
-        case 2 => (EnumLevel.Medium.id, wordsLevelMedium, EnumLineType.vertHorizonDiag.id)
-        case 3 => (EnumLevel.Hard.id, wordsLevelHard, EnumLineType.vertHorizonDiagTrans.id)
-      }
+      val (size, wordsList, lineType) = parametersGame(startLevel)
       matrix = Array.ofDim[Char](size, size)
       try {
         wordsList.foreach(c => lineGame(c, randomN(1, randomN(1, lineType))))
@@ -52,14 +56,13 @@ class Game {
       }
     } while (boo)
   }
-
-
+  
    //--------------- FILL MATRIX 
   
    //------------ VERTICAL GENERATOR ------------------
   
     def fillVert(word: String): Unit = {
-       var x = randomN(0, Math.abs(word.size - matrix.size))
+       var x = randomN(0, wordMatrixSize(word))
        var y = randomN(0, matrix.size - 1)
        var (p,q) = getInd(1,0)(x,y)(word)
         p match {
@@ -72,7 +75,7 @@ class Game {
     
      def fillHoriz(word: String): Unit = {
        var x = randomN(0, matrix.size - 1)
-       var y = randomN(0, Math.abs(word.size - matrix.size))
+       var y = randomN(0, wordMatrixSize(word))
        var (p,q) = getInd(0,1)(x,y)(word)
         p match {
           case -1 => fillHoriz(word)
@@ -83,8 +86,8 @@ class Game {
     //------------ DIAGONAL GENERATOR -------------------
  
     def fillDiag(word: String): Unit =  {
-       var x = randomN(0, Math.abs(word.size - matrix.size))
-       var y = randomN(0, Math.abs(word.size - matrix.size))
+       var x = randomN(0, wordMatrixSize(word))
+       var y = randomN(0, wordMatrixSize(word))
        var (p,q) = getInd(1,1)(x,y)(word)
         p match {
           case -1 => fillDiag(word)
@@ -95,8 +98,8 @@ class Game {
     //----------- TRANSVERSAL GENERATOR ---------------
     
     def fillTrans(word: String): Unit = {
-        var x = randomN(0, Math.abs(word.size - matrix.size)) 
-        var y = randomN(0, Math.abs(word.size - matrix.size)) + word.size - 1
+        var x = randomN(0, wordMatrixSize(word)) 
+        var y = randomN(0, wordMatrixSize(word)) + word.size - 1
         var (p,q) = getInd(1,-1)(x,y)(word)
         p match {
           case -1 => fillTrans(word)
@@ -130,102 +133,4 @@ class Game {
   def getWordsAswers = wordsAswers
   def setMatrixGame(newMatrix: Array[Array[Char]]) = { matrixGame = newMatrix }
 
-    
-    //CÓDIGO ANTERIOR
-    
-      //ALTERNATIVE WAY
-  //by: Leonardo Lucena -> git.io/vF9FY
-
-  //   private val lineGame = (word: String, n: Int) => n match {
-  //    case 1 => fill(1, 0)(word)
-  //    case 2 => fill(0, 1)(word)
-  //    case 3 => fill(1, 1)(word)
-  //    case 4 => fill(1, -1)(word)
-  //  }
-  
-
-  //  def fill(px: Int, py: Int)(word: String): Unit = {
-  //    var (x, y) = ind(px, py)(word)
-  //    for ((c, i) <- word.zipWithIndex) {
-  //      matrix(x + px * i)(y + py * i) = c
-  //    }
-  //  }
-  //
-  //  def ind(px: Int, py: Int)(word: String): (Int, Int) = {
-  //    var x = randomN(0, Math.abs(word.size - matrix.size))
-  //    var y = randomN(0, matrix.size - 1)
-  //    var seq = 0 until word.length
-  //    seq.filter(i => matrix(x + i * px)(y + i * py) != empty).size match {
-  //      case 0 => return (x, y)
-  //      case _ => ind(px, py)(word)
-  //    }
-  //  }
-    
-    
-    
-    
-    
-    
-    //------------------------------------------------------------------
-    
-    
-//      //------------ VERTICAL GENERATOR ------------------
-//
-//  def fillVert(word: String) = {
-//    var (x, y) = getVertInd(word)
-//    for (seq <- x until word.length() + x)
-//      yield matrix(seq)(y) = word.charAt(seq - x)
-//  }
-//
-//  def getVertInd(word: String): (Int, Int) = {
-//    var x = randomN(0, Math.abs(word.size - matrix.size))
-//    var y = randomN(0, matrix.size - 1)
-//    var seq = List.range(x, word.length() + x)
-//    seq.filter(matrix(_)(y) != empty).size match {
-//      case 0 => return (x, y)
-//      case _ => getVertInd(word)
-//    }
-//  }
-//
-//  //------------ HORIZONTAL GENERATOR -------------------
-//
-//  def fillHoriz(word: String) = {
-//    matrix = matrix.transpose
-//    fillVert(word)
-//    matrix = matrix.transpose
-//  }
-//
-//  //------------ DIAGONAL GENERATOR -------------------
-//
-//  def fillDiag(word: String) = {
-//    var (x, y) = getDiagSeq(word)
-//    for (seq <- 0 until word.length()) {
-//      matrix(x)(y) = word.charAt(seq)
-//      x += 1
-//      y += 1
-//    }
-//  }
-//
-//  def getDiagSeq(word: String): (Int, Int) = {
-//    var x = randomN(0, Math.abs(word.size - matrix.size))
-//    var y = randomN(0, Math.abs(word.size - matrix.size))
-//    var (seqX, seqY) = ((List.range(x, word.length() + x)), (List.range(y, word.length() + y)))
-//    seqX.zip(seqY).filter(idxLC => (matrix(idxLC._1)(idxLC._2) != empty)).size match {
-//      case 0 => return (x, y)
-//      case _ => getDiagSeq(word)
-//    }
-//  }
-//
-//  //----------- TRANSVERSAL GENERATOR ---------------
-//
-//  def fillTrans(word: String) = {
-//    matrix = matrix.map(_.reverse)
-//    fillDiag(word)
-//    matrix = matrix.map(_.reverse)
-//  }
-    
-    
-    
-    
-
-}
+ }
