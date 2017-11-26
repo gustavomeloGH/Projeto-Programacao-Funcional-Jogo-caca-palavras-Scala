@@ -1,6 +1,7 @@
 package br.com.novaroma.project
 
 import scala.util.Random
+import br.com.novaroma.traitProject.GameTrait
 import br.com.novaroma.util.EnumLevel
 import sun.invoke.empty.Empty
 import sun.security.util.Length
@@ -8,7 +9,7 @@ import br.com.novaroma.util.EnumAmountWord
 import br.com.novaroma.util.EnumLineType
 import br.com.novaroma.util.EnumFillMatrix
 
-class Game {
+class GameImpl extends GameTrait {
 
   //Definition variables
   private val wordsListClass = new WordList
@@ -123,14 +124,14 @@ class Game {
         case _ => return(-1, -1)
       }
     }
-
+    
     
 
   //----------- GET/SET METHODS GAME ---------------
 
-  def getMatrix = matrix
-  def getMatrixGame = matrixGame
-  def getWordsAswers = wordsAswers
-  def setMatrixGame(newMatrix: Array[Array[Char]]) = { matrixGame = newMatrix }
+  def getMatrix: Array[Array[Char]] = matrix
+  def getMatrixGame: Array[Array[Char]] = matrixGame
+  def getWordsAswers: List[String] = wordsAswers
+  def setMatrixGame(newMatrix: Array[Array[Char]]): Unit = { matrixGame = newMatrix }
 
  }

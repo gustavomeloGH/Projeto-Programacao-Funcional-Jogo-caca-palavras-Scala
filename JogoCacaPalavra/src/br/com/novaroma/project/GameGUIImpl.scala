@@ -1,6 +1,8 @@
 package br.com.novaroma.project
 
+
 import scala.util.Random
+import br.com.novaroma.traitProject.GameGUITrait
 import br.com.novaroma.util.EnumLevel
 import sun.invoke.empty.Empty
 import sun.security.util.Length
@@ -8,10 +10,10 @@ import br.com.novaroma.util.EnumAmountWord
 import br.com.novaroma.util.EnumLineType
 import br.com.novaroma.util.EnumFillMatrix
 
-class GameGUI {
+class GameGUIImpl extends GameGUITrait {
 
   //Definition variables
-  private val wordHunt = new Game
+  private val wordHunt = new GameImpl
   private var jLine = (i: Int) => (0 to i).foreach(_ => print("\n"))
   private var empty = ('\0')
   private var rightWords = List("")
