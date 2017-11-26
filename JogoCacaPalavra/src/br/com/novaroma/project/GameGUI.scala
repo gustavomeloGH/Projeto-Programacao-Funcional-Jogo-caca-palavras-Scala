@@ -90,7 +90,7 @@ class GameGUI {
       
       n match {
         case 0 => inputWordGame
-        case 1 => jLine(10); showGame(wordHunt.getMatrix); 
+        case 1 => jLine(10); showGame(wordHunt.getMatrixGame); 
         case 2 => win = 0
         case _ => println("Comando inválido!")
       }
