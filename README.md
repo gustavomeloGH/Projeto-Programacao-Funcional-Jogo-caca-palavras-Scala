@@ -1,4 +1,4 @@
-<h1><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"></svg></a>Projeto de Programação Funcional - Jogo Caça Palavras utilizando Scala</h1>
+<h3><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"></svg></a>Projeto de Programação Funcional - Jogo Caça Palavras utilizando Scala</h3>
 <h3><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"></svg></a>Tecnologias Usadas: </h3>
 
 <ul>
